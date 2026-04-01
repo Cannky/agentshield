@@ -1,0 +1,37 @@
+{
+  "name": "agentshield",
+  "version": "0.1.0",
+  "description": "Runtime security for AI coding agents. Blocks prompt injection, scope creep, and accidental damage at the hook layer.",
+  "license": "MIT",
+  "author": "Cannky",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cannky/agentshield.git"
+  },
+  "bin": {
+    "agentshield": "./bin/agentshield.ts"
+  },
+  "files": [
+    "bin/",
+    "hooks/",
+    "lib/",
+    "agents/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "claude-code",
+    "security",
+    "prompt-injection",
+    "hooks",
+    "ai-safety",
+    "agent-security",
+    "mcp",
+    "coding-agent"
+  ],
+  "type": "module",
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}
