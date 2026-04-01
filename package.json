@@ -1,15 +1,15 @@
 {
-  "name": "agentshield",
-  "version": "0.1.0",
+  "name": "hookshield",
+  "version": "0.2.0",
   "description": "Runtime security for AI coding agents. Blocks prompt injection, scope creep, and accidental damage at the hook layer.",
   "license": "MIT",
   "author": "Cannky",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Cannky/agentshield.git"
+    "url": "https://github.com/Cannky/hookshield.git"
   },
   "bin": {
-    "agentshield": "./bin/agentshield.ts"
+    "hookshield": "./bin/hookshield.ts"
   },
   "files": [
     "bin/",

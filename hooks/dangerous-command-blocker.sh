@@ -21,9 +21,9 @@ if [ -n "${CLAUDE_TOOL_INPUT:-}" ]; then
 fi
 
 # Load shared initialization
-AGENTSHIELD_HOME="${AGENTSHIELD_HOME:-$HOME/.agentshield}"
-if [ -f "${AGENTSHIELD_HOME}/lib/input-parser.sh" ]; then
-    source "${AGENTSHIELD_HOME}/lib/input-parser.sh"
+HOOKSHIELD_HOME="${HOOKSHIELD_HOME:-$HOME/.hookshield}"
+if [ -f "${HOOKSHIELD_HOME}/lib/input-parser.sh" ]; then
+    source "${HOOKSHIELD_HOME}/lib/input-parser.sh"
     parse_tool_input
 fi
 

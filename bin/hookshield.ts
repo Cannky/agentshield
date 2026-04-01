@@ -1,12 +1,12 @@
 #!/usr/bin/env bun
 // Created: 2026-04-01 00:00:00
-// AgentShield CLI - Runtime security for AI coding agents
+// HookShield CLI - Runtime security for AI coding agents
 
 import { existsSync, mkdirSync, copyFileSync, readFileSync, writeFileSync, chmodSync, readdirSync } from "fs";
 import { join, dirname } from "path";
 
 const HOME = process.env.HOME || "/tmp";
-const SHIELD_HOME = join(HOME, ".agentshield");
+const SHIELD_HOME = join(HOME, ".hookshield");
 const CLAUDE_DIR = join(HOME, ".claude");
 const SETTINGS_FILE = join(CLAUDE_DIR, "settings.json");
 const PKG_DIR = dirname(dirname(Bun.main));
@@ -19,24 +19,24 @@ switch (command) {
   case "status": status(); break;
   case "test": testPayloads(); break;
   default:
-    console.log(`agentshield v0.1.0 - Runtime security for AI coding agents
+    console.log(`hookshield v0.2.0 - Runtime security for AI coding agents
 
 Usage:
-  agentshield init        Install hooks, agent, and wire into settings.json
-  agentshield status      Show installed hooks and wiring status
-  agentshield test        Run sample payloads against injection scanner
-  agentshield uninstall   Remove all hooks and unwire from settings.json`);
+  hookshield init        Install hooks, agent, and wire into settings.json
+  hookshield status      Show installed hooks and wiring status
+  hookshield test        Run sample payloads against injection scanner
+  hookshield uninstall   Remove all hooks and unwire from settings.json`);
 }
 
 function init() {
-  console.log("Installing AgentShield...\n");
+  console.log("Installing HookShield...\n");
 
   // Create directory structure
   for (const dir of ["hooks", "lib", "agents"]) {
     mkdirSync(join(SHIELD_HOME, dir), { recursive: true });
   }
 
-  // Files to copy from package to ~/.agentshield/
+  // Files to copy from package to ~/.hookshield/
   const filesToCopy = [
     "hooks/prompt-injection-scanner.sh",
     "hooks/dangerous-command-blocker.sh",
@@ -77,7 +77,7 @@ function init() {
   console.log("");
   mergeSettings();
 
-  console.log("\nAgentShield installed. 5 defense layers active:");
+  console.log("\nHookShield installed. 5 defense layers active:");
   console.log("  1. PostToolUse: Prompt injection scanner (WebFetch/WebSearch/Playwright/Lightpanda)");
   console.log("  2. PostToolUse: Browser injection guard (Playwright/Lightpanda/browser-use)");
   console.log("  3. PreToolUse:  Dangerous command blocker (docker prune, rm system, force push)");
@@ -88,7 +88,7 @@ function init() {
 function mergeSettings() {
   // Backup existing settings
   if (existsSync(SETTINGS_FILE)) {
-    const backup = `${SETTINGS_FILE}.agentshield-backup`;
+    const backup = `${SETTINGS_FILE}.hookshield-backup`;
     if (!existsSync(backup)) {
       copyFileSync(SETTINGS_FILE, backup);
       console.log("  Backed up settings.json");
@@ -141,7 +141,7 @@ function mergeSettings() {
     for (const entry of newEntries) {
       const cmd = entry.hooks[0].command;
       const alreadyExists = existing.some(
-        (e) => e.hooks?.some((h) => h.command?.includes("agentshield"))
+        (e) => e.hooks?.some((h) => h.command?.includes("hookshield"))
       );
       if (!alreadyExists) {
         existing.push(entry);
@@ -159,7 +159,7 @@ function mergeSettings() {
 }
 
 function uninstall() {
-  console.log("Uninstalling AgentShield...\n");
+  console.log("Uninstalling HookShield...\n");
 
   // Remove from settings.json
   if (existsSync(SETTINGS_FILE)) {
@@ -169,7 +169,7 @@ function uninstall() {
       if (hooks) {
         for (const [lifecycle, entries] of Object.entries(hooks)) {
           hooks[lifecycle] = (entries as Array<{ hooks?: Array<{ command?: string }> }>).filter(
-            (e) => !e.hooks?.some((h) => h.command?.includes("agentshield"))
+            (e) => !e.hooks?.some((h) => h.command?.includes("hookshield"))
           );
           if (hooks[lifecycle].length === 0) delete hooks[lifecycle];
         }
@@ -181,17 +181,17 @@ function uninstall() {
     }
   }
 
-  // Remove ~/.agentshield/ directory
+  // Remove ~/.hookshield/ directory
   if (existsSync(SHIELD_HOME)) {
     Bun.spawnSync(["rm", "-rf", SHIELD_HOME]);
-    console.log("  Removed ~/.agentshield/");
+    console.log("  Removed ~/.hookshield/");
   }
 
-  console.log("\nAgentShield uninstalled.");
+  console.log("\nHookShield uninstalled.");
 }
 
 function status() {
-  console.log("AgentShield Status\n");
+  console.log("HookShield Status\n");
 
   const hookFiles = [
     "prompt-injection-scanner.sh",
@@ -226,7 +226,7 @@ function status() {
   if (existsSync(SETTINGS_FILE)) {
     try {
       const content = readFileSync(SETTINGS_FILE, "utf-8");
-      const wired = content.includes("agentshield");
+      const wired = content.includes("hookshield");
       console.log(`  ${wired ? "[OK]" : "[--]"} Hooks wired in settings.json`);
     } catch {
       console.log("  [--] Could not read settings.json");
@@ -241,7 +241,7 @@ function testPayloads() {
 
   const scannerPath = join(SHIELD_HOME, "hooks/prompt-injection-scanner.sh");
   if (!existsSync(scannerPath)) {
-    console.log("Scanner not installed. Run: agentshield init");
+    console.log("Scanner not installed. Run: hookshield init");
     process.exit(1);
   }
 

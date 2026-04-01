@@ -25,8 +25,8 @@ FILE_PATH=$(realpath -m "$FILE_PATH" 2>/dev/null || echo "$FILE_PATH")
 # ============================================================
 # PART 1: PATH PROTECTION (from write-protect.sh)
 # ============================================================
-AGENTSHIELD_HOME="${AGENTSHIELD_HOME:-$HOME/.agentshield}"
-PATTERNS_FILE="$AGENTSHIELD_HOME/lib/damage-control-patterns.yaml"
+HOOKSHIELD_HOME="${HOOKSHIELD_HOME:-$HOME/.hookshield}"
+PATTERNS_FILE="$HOOKSHIELD_HOME/lib/damage-control-patterns.yaml"
 HOME_EXPANDED="${HOME:-/home/canky}"
 
 if [[ -f "$PATTERNS_FILE" ]]; then
@@ -86,8 +86,8 @@ case "$FILE_PATH" in
 esac
 
 # Load shared secret patterns if available
-if [[ -f "$AGENTSHIELD_HOME/lib/secret-patterns.sh" ]]; then
-    source "$AGENTSHIELD_HOME/lib/secret-patterns.sh"
+if [[ -f "$HOOKSHIELD_HOME/lib/secret-patterns.sh" ]]; then
+    source "$HOOKSHIELD_HOME/lib/secret-patterns.sh"
     if type contains_secret &>/dev/null; then
         if contains_secret "$CONTENT"; then
             echo "[WRITE-GUARD] BLOCKED: Secret/credential detected in $FILE_PATH" >&2
