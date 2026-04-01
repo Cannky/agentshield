@@ -27,7 +27,7 @@ FILE_PATH=$(realpath -m "$FILE_PATH" 2>/dev/null || echo "$FILE_PATH")
 # ============================================================
 HOOKSHIELD_HOME="${HOOKSHIELD_HOME:-$HOME/.hookshield}"
 PATTERNS_FILE="$HOOKSHIELD_HOME/lib/damage-control-patterns.yaml"
-HOME_EXPANDED="${HOME:-/home/canky}"
+HOME_EXPANDED="${HOME:-$(echo ~)}"
 
 if [[ -f "$PATTERNS_FILE" ]]; then
     # .example/.template/.sample files are convention-safe, skip zeroAccess blocking
